@@ -19,7 +19,7 @@ public class PresenterTests {
     User user;
 
     @Before
-    public  void setup(){
+    public void setup(){
 
         mockLoginModel = mock(LoginActivityMVP.Model.class);
 
