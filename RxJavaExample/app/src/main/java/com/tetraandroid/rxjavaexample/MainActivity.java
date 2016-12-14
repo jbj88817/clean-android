@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         ((App)getApplication()).getComponent().inject(this);
 
+        // Retrofit
         Call<Twitch> call = twitchAPI.getTopGames(API_KEY);
 
         call.enqueue(new Callback<Twitch>() {
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+        // Rx method with String
         twitchAPI.getTopGamesObservable(API_KEY).flatMap(new Func1<Twitch, Observable<Top>>() {
             @Override
             public Observable<Top> call(Twitch twitch) {
@@ -71,7 +72,9 @@ public class MainActivity extends AppCompatActivity {
                 return Observable.just(top.getGame().getName());
 
             }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<String>() {
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<String>() {
             @Override
             public void onCompleted() {
 
@@ -90,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        // Rx method with Int
        twitchAPI.getTopGamesObservable(API_KEY).flatMap(new Func1<Twitch, Observable<Top>>() {
             @Override
             public Observable<Top> call(Twitch twitch) {
@@ -122,6 +126,8 @@ public class MainActivity extends AppCompatActivity {
            }
        });
 
+
+        // Rx method with filter
         twitchAPI.getTopGamesObservable(API_KEY).flatMap(new Func1<Twitch, Observable<Top>>() {
             @Override
             public Observable<Top> call(Twitch twitch) {
@@ -154,9 +160,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onNext(String s) {
                 System.out.println("From rx java with filter: " + s);
-
             }
         });
-
     }
 }
