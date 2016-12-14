@@ -11,8 +11,4 @@ public interface TwitchAPI {
     @GET("games/top")
     Call<APISS> getTopGames(@Header("Client-Id") String clientId);
 
-
-
-
-
 }

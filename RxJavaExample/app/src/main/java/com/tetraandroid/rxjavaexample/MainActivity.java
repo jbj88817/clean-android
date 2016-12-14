@@ -9,8 +9,9 @@ import com.tetraandroid.rxjavaexample.http.apimodel.Top;
 import com.tetraandroid.rxjavaexample.http.apimodel.Twitch;
 import com.tetraandroid.rxjavaexample.root.App;
 
-import javax.inject.Inject;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,6 +25,8 @@ import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String API_KEY = "glm4y8j3jeo9gk37wjoe3qaiewxz9w";
+
     @Inject
     TwitchAPI twitchAPI;
 
@@ -34,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         ((App)getApplication()).getComponent().inject(this);
 
-        Call<Twitch> call = twitchAPI.getTopGames("replace_here_the_client_id_generated_by_the_twitch_api");
+        Call<Twitch> call = twitchAPI.getTopGames(API_KEY);
 
         call.enqueue(new Callback<Twitch>() {
             @Override
@@ -55,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        twitchAPI.getTopGamesObservable("replace_here_the_client_id_generated_by_the_twitch_api").flatMap(new Func1<Twitch, Observable<Top>>() {
+        twitchAPI.getTopGamesObservable(API_KEY).flatMap(new Func1<Twitch, Observable<Top>>() {
             @Override
             public Observable<Top> call(Twitch twitch) {
 
@@ -87,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-       twitchAPI.getTopGamesObservable("replace_here_the_client_id_generated_by_the_twitch_api").flatMap(new Func1<Twitch, Observable<Top>>() {
+       twitchAPI.getTopGamesObservable(API_KEY).flatMap(new Func1<Twitch, Observable<Top>>() {
             @Override
             public Observable<Top> call(Twitch twitch) {
 
@@ -119,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
            }
        });
 
-        twitchAPI.getTopGamesObservable("replace_here_the_client_id_generated_by_the_twitch_api").flatMap(new Func1<Twitch, Observable<Top>>() {
+        twitchAPI.getTopGamesObservable(API_KEY).flatMap(new Func1<Twitch, Observable<Top>>() {
             @Override
             public Observable<Top> call(Twitch twitch) {
 
