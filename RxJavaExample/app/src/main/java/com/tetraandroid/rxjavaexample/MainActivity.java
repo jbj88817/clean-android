@@ -9,8 +9,9 @@ import com.tetraandroid.rxjavaexample.http.apimodel.Top;
 import com.tetraandroid.rxjavaexample.http.apimodel.Twitch;
 import com.tetraandroid.rxjavaexample.root.App;
 
-import javax.inject.Inject;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,6 +25,8 @@ import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String API_KEY = "glm4y8j3jeo9gk37wjoe3qaiewxz9w";
+
     @Inject
     TwitchAPI twitchAPI;
 
@@ -34,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
         ((App)getApplication()).getComponent().inject(this);
 
-        Call<Twitch> call = twitchAPI.getTopGames("replace_here_the_client_id_generated_by_the_twitch_api");
+        // Retrofit
+        Call<Twitch> call = twitchAPI.getTopGames(API_KEY);
 
         call.enqueue(new Callback<Twitch>() {
             @Override
@@ -54,8 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-        twitchAPI.getTopGamesObservable("replace_here_the_client_id_generated_by_the_twitch_api").flatMap(new Func1<Twitch, Observable<Top>>() {
+        // Rx method with String
+        twitchAPI.getTopGamesObservable(API_KEY).flatMap(new Func1<Twitch, Observable<Top>>() {
             @Override
             public Observable<Top> call(Twitch twitch) {
 
@@ -68,7 +72,9 @@ public class MainActivity extends AppCompatActivity {
                 return Observable.just(top.getGame().getName());
 
             }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<String>() {
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<String>() {
             @Override
             public void onCompleted() {
 
@@ -87,7 +93,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-       twitchAPI.getTopGamesObservable("replace_here_the_client_id_generated_by_the_twitch_api").flatMap(new Func1<Twitch, Observable<Top>>() {
+        // Rx method with Int
+       twitchAPI.getTopGamesObservable(API_KEY).flatMap(new Func1<Twitch, Observable<Top>>() {
             @Override
             public Observable<Top> call(Twitch twitch) {
 
@@ -119,7 +126,9 @@ public class MainActivity extends AppCompatActivity {
            }
        });
 
-        twitchAPI.getTopGamesObservable("replace_here_the_client_id_generated_by_the_twitch_api").flatMap(new Func1<Twitch, Observable<Top>>() {
+
+        // Rx method with filter
+        twitchAPI.getTopGamesObservable(API_KEY).flatMap(new Func1<Twitch, Observable<Top>>() {
             @Override
             public Observable<Top> call(Twitch twitch) {
 
@@ -151,9 +160,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onNext(String s) {
                 System.out.println("From rx java with filter: " + s);
-
             }
         });
-
     }
 }
